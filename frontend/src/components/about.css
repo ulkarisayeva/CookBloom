@@ -1,0 +1,17 @@
+body {
+    background:  #f4eef1 ;
+}
+
+
+.about {
+    display: flex;
+    width: 60%;
+    justify-content:center;
+    margin:0 auto;
+    margin-top: 10% !important;
+}
+
+.images {
+    margin-left: 7%;
+    border-radius: 4%;
+}
