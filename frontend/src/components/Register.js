@@ -31,7 +31,7 @@ function Register() {
   return (
     <div>
       <Container>
-        <Row className="d-flex justify-content-center align-items-center mt-5">
+        <Row className="d-flex justify-content-center align-items-center mb-5">
           <Col md={8} lg={4} xs={12}>
             <div className="border border-3"></div>
             <Card className="shadow">

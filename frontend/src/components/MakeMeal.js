@@ -75,7 +75,7 @@ function MakeMeal() {
   };
 
   return (
-    <div className="recipes">
+    <div className="recipes" style={{height: "100vh"}}>
       <div className=" recipes mb-5"></div>
       {error !== "" && (
         <Alert className="mb-3" key={"danger"} variant={"danger"}>
