@@ -125,7 +125,7 @@ export default function EditButton() {
                             <Card.Title>{recipe.name}</Card.Title>
                             <Card.Text>{recipe.ingredients}</Card.Text>
                             <Button
-                              className="mt-3"
+                              className="mt-3 recipe-delete"
                               data-id={recipe._id}
                               onClick={handleDelete}
                             >
