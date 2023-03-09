@@ -134,7 +134,7 @@ function MakeMeal() {
             </Card.Body>
           </Card>
           <br />
-          <Button className="mt-3" size="lg" onClick={handleShow}>
+          <Button className="mt-3 pink-button" size="lg" onClick={handleShow}>
             {" "}
             <GrSave /> {" | "} Save
           </Button>
@@ -155,7 +155,7 @@ function MakeMeal() {
               <Button variant="secondary" onClick={handleClose}>
                 Close
               </Button>
-              <Button variant="primary" onClick={handleSave}>
+              <Button className="pink-button" variant="primary" onClick={handleSave}>
                 Save Recipe
               </Button>
             </Modal.Footer>

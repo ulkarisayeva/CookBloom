@@ -90,14 +90,14 @@ h1 {
   border-color: black !important;
 }
 
-.recipes .pink-button {
+.pink-button {
   background-color: #fdd3e5 !important;
   border-color: #fdd3e5  !important;
-  color: black;
+  color: black !important;
 }
 
 
-.recipes .pink-button:hover{
+.pink-button:hover{
   background-color: #f7b8d3 !important;
   border-color: #fdd3e5  !important;
   color: black;

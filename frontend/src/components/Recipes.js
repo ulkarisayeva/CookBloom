@@ -119,7 +119,7 @@ function Recipes() {
             {instructions.replace("\n\n", "\n")}
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
+            <Button variant="secondary" className="pink-button" onClick={handleClose}>
               Close
             </Button>
           </Modal.Footer>
