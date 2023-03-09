@@ -7,8 +7,10 @@ import About from './components/About';
 import Home from "./components/Home";
 import Login from './components/Login';
 import Register from './components/Register';
-import Profile from './components/Profile'
-import Recipes from './components/Recipes';
+import Profile from './components/Profile';
+import MakeMeal from './components/MakeMeal';
+import Recipes from './components/Recipes'
+
 
 
 
@@ -22,7 +24,9 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/make-meal" element={<MakeMeal />} />
           <Route path="/recipes" element={<Recipes />} />
+
       </Routes>
       <Footer />
     </div>

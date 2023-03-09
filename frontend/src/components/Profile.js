@@ -1,9 +1,56 @@
-import React from "react";
-import { Col, Container, Row, Card, Image, Button } from "react-bootstrap";
+import { useState, useEffect } from "react";
+import {
+  Col,
+  Container,
+  Row,
+  Card,
+  Image,
+  Button,
+  Alert,
+} from "react-bootstrap";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { GrSave } from "react-icons/gr";
+import axios from "axios";
 
 export default function EditButton() {
+  const [recipes, setRecipes] = useState([]);
+  const [error, setError] = useState("");
+
+  const handleDelete = (e) => {
+    e.preventDefault();
+
+    axios
+      .delete(`http://localhost:5005/recipe/${e.target.dataset.id}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
+      .then((response) => {
+        setRecipes(
+          recipes.filter(function (recipe) {
+            return recipe._id !== e.target.dataset.id;
+          })
+        );
+        setError("");
+      })
+      .catch((error) => {
+        if (error.response?.data) setError(error.response.data["message"]);
+        else setError("Something went wrong");
+      });
+  };
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5005/saved-recipes", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
+      .then((response) => {
+        setRecipes(response.data.recipes);
+        setError("");
+      })
+      .catch((error) => {
+        if (error.response?.data) setError(error.response.data["message"]);
+        else setError("Something went wrong");
+      });
+  }, []);
+
   return (
     <div className="gradient-custom-2" style={{ backgroundColor: "#fdd3e5" }}>
       <Container className="py-5">
@@ -46,7 +93,7 @@ export default function EditButton() {
               >
                 <div className="d-flex justify-content-end text-center py-1">
                   <div>
-                    <p className="mb-1 h5">Number</p>
+                    <p className="mb-1 h5">{recipes.length}</p>
                     <p className="small text-muted mb-0">Recipes</p>
                   </div>
                   {/* <div className="px-3">
@@ -62,39 +109,33 @@ export default function EditButton() {
               <Card.Body className="text-black p-4">
                 <div className="d-flex justify-content-between align-items-center mb-4">
                   <p className="lead fw-normal mb-0">Saved Recipes</p>
-                  <p className="mb-0">
-                    <a href="#!" className="text-muted">
-                      Show all
-                    </a>
-                  </p>
                 </div>
                 <Row className="recipes">
-                  <Card className="mb-2 mx-auto" style={{ width: "40%" }}>
-                    <Card.Body>
-                      <Card.Title>Card Title</Card.Title>
-                      <Card.Text>
-                        Some quick example text to build on the card title and
-                        make up the bulk of the card's content.
-                      </Card.Text>
-                      <Button className="mt-3">
-                        {" "}
-                        <RiDeleteBin6Line /> {" | "} Delete
-                      </Button>
-                    </Card.Body>
-                  </Card>
-                  <Card className="mb-2 mx-auto" style={{ width: "40%" }}>
-                    <Card.Body>
-                      <Card.Title>Card Title</Card.Title>
-                      <Card.Text>
-                        Some quick example text to build on the card title and
-                        make up the bulk of the card's content.
-                      </Card.Text>
-                      <Button className="mt-3">
-                        {" "}
-                        <RiDeleteBin6Line /> {" | "} Delete
-                      </Button>
-                    </Card.Body>
-                  </Card>
+                  {error !== "" && (
+                    <Alert className="mb-3" key={"danger"} variant={"danger"}>
+                      {error}
+                    </Alert>
+                  )}
+                  {recipes.map(function (recipe, idx) {
+                    return (
+                      <>
+                        <Card className="mb-2 mx-auto" style={{ width: "40%" }}>
+                          <Card.Body>
+                            <Card.Title>{recipe.name}</Card.Title>
+                            <Card.Text>{recipe.ingredients}</Card.Text>
+                            <Button
+                              className="mt-3"
+                              data-id={recipe._id}
+                              onClick={handleDelete}
+                            >
+                              {" "}
+                              <RiDeleteBin6Line /> {" | "} Delete
+                            </Button>
+                          </Card.Body>
+                        </Card>
+                      </>
+                    );
+                  })}
                 </Row>
               </Card.Body>
             </Card>

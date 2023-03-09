@@ -1,17 +1,19 @@
 body {
     background:  #f4eef1 ;
 }
-
-
 .about {
     display: flex;
-    width: 60%;
+    width: 66%;
     justify-content:center;
     margin:0 auto;
-    margin-top: 10% !important;
+    margin-top: 4% !important;
 }
 
 .images {
     margin-left: 7%;
-    border-radius: 4%;
+    border-radius: 10%;
+}
+
+.text {
+    text-align: center;
 }

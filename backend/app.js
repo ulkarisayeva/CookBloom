@@ -3,7 +3,7 @@ require("./config/database").connect();
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const cors = require('cors');
+const cors = require("cors");
 
 const User = require("./model/user");
 const Recipe = require("./model/recipe");
@@ -11,9 +11,11 @@ const auth = require("./middleware/auth");
 
 const app = express();
 app.use(express.json());
-app.use(cors({
-  origin: '*'
-}));
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
 const { Configuration, OpenAIApi } = require("openai");
 
@@ -61,7 +63,7 @@ app.post("/register", async (req, res) => {
       { user_id: user._id, email, fullname },
       process.env.TOKEN_KEY,
       {
-        expiresIn: "2h",
+        expiresIn: "24h",
       }
     );
 
@@ -131,21 +133,20 @@ app.post("/generate-recipe", auth, async (req, res) => {
   ${meal}
   
   Ingredients:
-  ${ingredients.join(', ')}
+  ${ingredients.join(", ")}
   
-  Instructions:`
+  Instructions:`;
 
   const completion = await openai.createCompletion({
     model: "text-davinci-003",
     prompt: prompt,
-    max_tokens: 2000
+    max_tokens: 2000,
   });
 
   res.status(200).json({
-    instructions: completion.data.choices[0].text
+    instructions: completion.data.choices[0].text,
   });
 });
-
 
 // Save recipe endpoint
 app.post("/recipe", auth, async (req, res) => {
@@ -155,7 +156,8 @@ app.post("/recipe", auth, async (req, res) => {
   if (!(name && meal && ingredients && instructions)) {
     res.status(400).json({
       success: false,
-      message: "Please, provide all the required parameters: name, meal, ingredients and instructions",
+      message:
+        "Please, provide all the required parameters: name, meal, ingredients and instructions",
     });
   }
 
@@ -163,7 +165,7 @@ app.post("/recipe", auth, async (req, res) => {
   const recipe = await Recipe.create({
     name: name,
     meal: meal,
-    ingredients: ingredients.join(', '),
+    ingredients: ingredients.join(", "),
     instructions: instructions,
     user_id: req.user.user_id,
   });
@@ -171,6 +173,44 @@ app.post("/recipe", auth, async (req, res) => {
   res.status(200).json(recipe);
 });
 
+// Delete recipe endpoint
+app.delete("/recipe/:recipeID", auth, async (req, res) => {
+  Recipe.deleteOne({ _id: req.params.recipeID, user_id: req.user.user_id }, function (err) {
+    if (err) return res.status(400).json({message: err});
+    res.status(200).json({});
+  });
+});
+
+// List saved recipe endpoint
+app.get("/saved-recipes", auth, async (req, res) => {
+  Recipe.find({user_id: { $eq: req.user.user_id }}, function (err, recipes) {
+    if (err) {
+      res.status(404).json({
+        success: "false",
+        message: "Something happened wrong",
+      });
+    } else {
+      res.status(200).json({ recipes: recipes });
+    }
+  });
+});
+
+// List  recipes  endpoint
+app.get("/recipes", async (req, res) => {
+  Recipe.find({}, function (err, recipes) {
+    if (err) {
+      res.status(404).json({
+        success: "false",
+        message: "Something happened wrong",
+      });
+    } else {
+      
+      res.status(200).json({ recipes: recipes });
+    }
+  });
+});
+
+// all the other endpoints which are not defined will return 404
 app.use("*", (req, res) => {
   res.status(404).json({
     success: "false",

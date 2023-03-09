@@ -1,148 +1,79 @@
-import { useState } from "react";
-import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
-import Button from "react-bootstrap/Button";
-import Alert from "react-bootstrap/Alert";
-import { InputTags } from "react-bootstrap-tagsinput";
-import "react-bootstrap-tagsinput/dist/index.css";
-import Card from "react-bootstrap/Card";
+import { useState, useEffect } from "react";
+import { Col, Container, Row, Card, Alert } from "react-bootstrap";
 import axios from "axios";
-import Modal from "react-bootstrap/Modal";
-import { GrSave } from "react-icons/gr";
+import StarRating from "./StarRating";
 
 function Recipes() {
-  const [name, setName] = useState("");
-  const [meal, setMeal] = useState("");
-  const [ingredients, setIngredients] = useState([]);
-  const [instructions, setInstructions] = useState("");
+  const [recipes, setRecipes] = useState([]);
   const [error, setError] = useState("");
-  const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
-  const handleSave = (e) => {
-    e.preventDefault();
+  useEffect(() => {
     axios
-      .post(
-        "http://localhost:5005/recipe",
-        {
-          name: name,
-          meal: meal,
-          ingredients: ingredients,
-          instructions: instructions,
-        },
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
-      )
+      .get("http://localhost:5005/recipes")
       .then((response) => {
-        handleClose();
+        setRecipes(response.data.recipes);
+        setError("");
       })
       .catch((error) => {
         if (error.response?.data) setError(error.response.data["message"]);
         else setError("Something went wrong");
       });
-  };
-
-  const handleMakemeal = (e) => {
-    e.preventDefault();
-    axios
-      .post(
-        "http://localhost:5005/generate-recipe",
-        {
-          meal: meal,
-          ingredients: ingredients,
-        },
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
-      )
-      .then((response) => {
-        setInstructions(response.data.instructions);
-      })
-      .catch((error) => {
-        if (error.response?.data) setError(error.response.data["message"]);
-        else setError("Something went wrong");
-      });
-  };
-
+  }, []);
   return (
-    <div className="recipes">
-      <div className=" recipes mb-5"></div>
-      {error !== "" && (
-        <Alert className="mb-3" key={"danger"} variant={"danger"}>
-          {error}
-        </Alert>
-      )}
-      <InputGroup
-        style={{ width: "70%", margin: "auto" }}
-        size="lg"
-        className="d-flex justify-content-center align-items-center mb-3"
-      >
-        <Form.Select
-          aria-label="Meal"
-          onChange={(e) => setMeal(e.target.value)}
-        >
-          <option>Select meal</option>
-          <option value="Appetizer">Appetizer</option>
-          <option value="Breakfast">Breakfast</option>
-          <option value="Dessert">Dessert</option>
-          <option value="Salad">Salad</option>
-          <option value="Soup">Soup</option>
-          <option value="Vegetarian">Vegetarian</option>
-        </Form.Select>
-        <InputTags
-          values={ingredients}
-          onTags={(value) => setIngredients(value.values)}
-        />
-      </InputGroup>
-      <Button size="lg" onClick={handleMakemeal}>
-        Make meal
-      </Button>{" "}
-      {instructions !== "" && (
-        <>
-          <Card className="tailor-recipe mt-5">
-            <Card.Header as="h5">
-              Tailor-made recipe (eat at your own risk)
-            </Card.Header>
-            <Card.Body>
-              <Card.Text className="display-linebreak">
-                {instructions}
-              </Card.Text>
-            </Card.Body>
-          </Card>
-          <br />
-          <Button className="mt-3" size="lg" onClick={handleShow}>
-            {" "}
-            <GrSave /> {" | "} Save
-          </Button>
-
-          <Modal show={show} onHide={handleClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>Name of your recipe</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Form.Control
-                type="text"
-                placeholder="Enter name"
-                required
-                onChange={(event) => setName(event.target.value)}
-              />
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                Close
-              </Button>
-              <Button variant="primary" onClick={handleSave}>
-                Save Recipe
-              </Button>
-            </Modal.Footer>
-          </Modal>
-        </>
-      )}
+    <div>
+      <Container className="py-4">
+        <Row className="justify-content-center align-items-center">
+          <Col>
+            <div
+              className="allcards"
+              style={{ width: "100%", backgroundColor: "#f4eef1" }}
+            >
+              <h1>Explore CookBloom Recipes</h1>
+              <p className="text-align-justify mt-3">
+                What's on the menu, today? We believe that cooking and sharing
+                food is one of life's greatest pleasures, and we hope that our
+                recipes inspire you to try new things and create amazing meals
+                for yourself and your loved ones.
+              </p>
+            </div>
+          </Col>
+        </Row>
+        <Row className="">
+          <Card.Body className="text-black p-4">
+            <Row className="recipes">
+              {error !== "" && (
+                <Alert className="mb-3" key={"danger"} variant={"danger"}>
+                  {error}
+                </Alert>
+              )}
+              {recipes.map(function (recipe, idx) {
+                return (
+                  <>
+                    <Card
+                      className="mb-5 mx-auto"
+                      style={{ width: "23rem" }}
+                      border="dark"
+                    >
+                      <Card.Header style={{ backgroundColor: "#fdd3e5" }}>
+                        {recipe.meal}
+                      </Card.Header>
+                      <Card.Body>
+                        <Card.Title>{recipe.name}</Card.Title>
+                        <Card.Text>{recipe.ingredients}</Card.Text>
+                        
+                      </Card.Body>
+                      <div>
+                          <StarRating />
+                        </div>
+                    </Card>
+                  </>
+                );
+              })}
+            </Row>
+          </Card.Body>
+        </Row>
+      </Container>
     </div>
   );
 }
-
 export default Recipes;

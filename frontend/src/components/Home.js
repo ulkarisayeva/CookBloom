@@ -18,7 +18,7 @@ function Home() {
           <Card.ImgOverlay className="centered">
             <Card.Title> <h1> BRINGING DELICIOUS RECIPES TO YOUR FINGERTIPS!</h1> </Card.Title>
             <Card.Text>Search recipes with your ingredients</Card.Text>
-             <Button   size="lg" className="btn-make" href='./recipes'  variant="light" >
+             <Button   size="lg" className="btn-make" href='./make-meal'  variant="light" >
 
               < GiCook/> {" "} Make your meal
         

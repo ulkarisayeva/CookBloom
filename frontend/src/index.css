@@ -89,14 +89,6 @@ h1 {
   background-color: black !important;
   border-color: black !important;
 }
-/* .about {
-  background-image: linear-gradient(90deg, #fdd3e5, #a1d2e6);
-} */
-
-/* body {
-  background: linear-gradient(45deg, #fdd3e5 30%, #a1d2e6 );
-
-} */
 
 .recipes button {
   background-color: #fdd3e5 !important;
@@ -109,7 +101,7 @@ h1 {
   background-color: #f7b8d3 !important;
   border-color: #fdd3e5  !important;
   color: black;
- 
+
 }
 
 .tailor-recipe {
@@ -118,4 +110,22 @@ h1 {
   height: 50vh;
   border: 1px solid #88c8e1 ;
   background: linear-gradient(45deg, #fdd3e5 30%, #a1d2e6 );
+}
+
+.allcards {
+  border: none;
+}
+
+button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+.on {
+  color: #000;
+}
+
+.off {
+  color:#ccc; 
 }

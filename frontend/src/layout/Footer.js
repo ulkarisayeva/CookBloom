@@ -12,11 +12,11 @@ import {AiFillPhone} from 'react-icons/ai';
     <div style={{ backgroundColor: "#fdd3e5"}} className='footer text-center text-white'>
       <Container className='p-5 pb-0'>
         <section className=' mb-4'>
-          <Button outline color="light" floating className='btn-footer m-1' href='#!' role='button'>
+          <Button outline color="light" floating className='btn-footer m-1' href='ulkar.isayeva@gmail.com' role='button'>
              <MdEmail/>
           </Button>
 
-          <Button outline color="light" floating className='btn-footer m-1' href='#!' role='button'>
+          <Button outline color="light" floating className='btn-footer m-1' href='015226220968' role='button'>
          <AiFillPhone />
           </Button>
 
