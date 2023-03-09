@@ -11,6 +11,7 @@ import Modal from "react-bootstrap/Modal";
 import { GrSave } from "react-icons/gr";
 import { useNavigate } from 'react-router-dom'
 import { ApiUrl } from "../config";
+import logo from '../assets/ACW2018-Loader.gif'
 
 
 function MakeMeal() {
@@ -23,6 +24,7 @@ function MakeMeal() {
   const [instructions, setInstructions] = useState("");
   const [error, setError] = useState("");
   const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -45,7 +47,6 @@ function MakeMeal() {
       .then((response) => {
         handleClose();
         navigate('/profile', { replace: true });
-
       })
       .catch((error) => {
         if (error.response?.data) setError(error.response.data["message"]);
@@ -55,6 +56,7 @@ function MakeMeal() {
 
   const handleMakemeal = (e) => {
     e.preventDefault();
+    setLoading(true);
     axios
       .post(
         `${ApiUrl}/generate-recipe`,
@@ -72,6 +74,8 @@ function MakeMeal() {
       .catch((error) => {
         if (error.response?.data) setError(error.response.data["message"]);
         else setError("Something went wrong");
+      }).finally(() => {
+        setLoading(false);
       });
   };
 
@@ -108,6 +112,15 @@ function MakeMeal() {
       <Button size="lg" onClick={handleMakemeal}>
         Make meal
       </Button>{" "}
+      {loading === true && (
+        <div>
+          <img
+            width={"30%"}
+            src={logo}
+            alt="loading..."
+          />
+        </div>
+      )}
       {instructions !== "" && (
         <>
           <Card className="tailor-recipe mt-5">
