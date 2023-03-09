@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Col, Container, Row, Card, Alert } from "react-bootstrap";
 import axios from "axios";
 import StarRating from "./StarRating";
+import { ApiUrl } from "../config";
+
 
 function Recipes() {
   const [recipes, setRecipes] = useState([]);
@@ -9,7 +11,7 @@ function Recipes() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5005/recipes")
+      .get(`${ApiUrl}/recipes`)
       .then((response) => {
         setRecipes(response.data.recipes);
         setError("");

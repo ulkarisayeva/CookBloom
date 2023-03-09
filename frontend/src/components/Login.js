@@ -2,6 +2,7 @@ import { Alert, Col, Button, Row, Container, Card, Form } from "react-bootstrap"
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import axios from 'axios'
+import { ApiUrl } from "../config";
 
 export default function Login() {
 
@@ -14,7 +15,7 @@ export default function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    axios.post('http://localhost:5005/login', {
+    axios.post(`${ApiUrl}/login`, {
       "email": email,
       "password": password
     }).then(response => {

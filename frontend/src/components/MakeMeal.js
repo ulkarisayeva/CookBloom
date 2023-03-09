@@ -10,6 +10,7 @@ import axios from "axios";
 import Modal from "react-bootstrap/Modal";
 import { GrSave } from "react-icons/gr";
 import { useNavigate } from 'react-router-dom'
+import { ApiUrl } from "../config";
 
 
 function MakeMeal() {
@@ -30,7 +31,7 @@ function MakeMeal() {
     e.preventDefault();
     axios
       .post(
-        "http://localhost:5005/recipe",
+        `${ApiUrl}/recipe`,
         {
           name: name,
           meal: meal,
@@ -56,7 +57,7 @@ function MakeMeal() {
     e.preventDefault();
     axios
       .post(
-        "http://localhost:5005/generate-recipe",
+        `${ApiUrl}/generate-recipe`,
         {
           meal: meal,
           ingredients: ingredients,

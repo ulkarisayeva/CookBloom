@@ -10,6 +10,7 @@ import {
 } from "react-bootstrap";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import axios from "axios";
+import { ApiUrl } from "../config";
 
 export default function EditButton() {
   const [recipes, setRecipes] = useState([]);
@@ -19,7 +20,7 @@ export default function EditButton() {
     e.preventDefault();
 
     axios
-      .delete(`http://localhost:5005/recipe/${e.target.dataset.id}`, {
+      .delete(`${ApiUrl}/recipe/${e.target.dataset.id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       })
       .then((response) => {
@@ -38,7 +39,7 @@ export default function EditButton() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5005/saved-recipes", {
+      .get(`${ApiUrl}/saved-recipes`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       })
       .then((response) => {

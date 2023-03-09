@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Alert, Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { ApiUrl } from "../config";
 
 function Register() {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ function Register() {
   const registerSubmit = (e) => {
     e.preventDefault();
 
-    axios.post('http://localhost:5005/register', {
+    axios.post(`${ApiUrl}/register`, {
       "fullname": fullname,
       "email": email,
       "password": password
