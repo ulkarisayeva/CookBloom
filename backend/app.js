@@ -207,7 +207,7 @@ app.get("/recipes", async (req, res) => {
       
       res.status(200).json({ recipes: recipes });
     }
-  });
+  }).populate('user','fullname').exec();
 });
 
 // all the other endpoints which are not defined will return 404

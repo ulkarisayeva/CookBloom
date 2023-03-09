@@ -90,14 +90,14 @@ h1 {
   border-color: black !important;
 }
 
-.recipes .recipe-delete {
+.recipes .pink-button {
   background-color: #fdd3e5 !important;
   border-color: #fdd3e5  !important;
   color: black;
 }
 
 
-.recipes .recipe-delete:hover{
+.recipes .pink-button:hover{
   background-color: #f7b8d3 !important;
   border-color: #fdd3e5  !important;
   color: black;
@@ -128,4 +128,9 @@ button {
 
 .off {
   color:#ccc; 
+}
+
+.recipe-title {
+  color: #000000;
+  text-decoration: none;
 }

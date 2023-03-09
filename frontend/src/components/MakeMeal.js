@@ -109,7 +109,7 @@ function MakeMeal() {
           onTags={(value) => setIngredients(value.values)}
         />
       </InputGroup>
-      <Button size="lg" onClick={handleMakemeal}>
+      <Button className="pink-button" size="lg" onClick={handleMakemeal}>
         Make meal
       </Button>{" "}
       {loading === true && (

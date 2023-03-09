@@ -1,19 +1,48 @@
 import { useState, useEffect } from "react";
-import { Col, Container, Row, Card, Alert } from "react-bootstrap";
+import {
+  Col,
+  Container,
+  Row,
+  Card,
+  Alert,
+  Modal,
+  Button,
+} from "react-bootstrap";
 import axios from "axios";
 import StarRating from "./StarRating";
 import { ApiUrl } from "../config";
-
+import { Link } from "react-router-dom";
 
 function Recipes() {
   const [recipes, setRecipes] = useState([]);
   const [error, setError] = useState("");
+  const [show, setShow] = useState(false);
+  const [name, setName] = useState("");
+  const [meal, setMeal] = useState("");
+  const [ingredients, setIngredients] = useState("");
+  const [instructions, setInstructions] = useState("");
+
+  const handleClose = () => setShow(false);
+  const handleShow = (e) => {
+    let recipe = recipes[e.target.dataset.id];
+
+    setName(recipe.name);
+    setMeal(recipe.meal);
+    setIngredients(recipe.ingredients);
+    setInstructions(recipe.instructions);
+
+    setShow(true);
+  };
 
   useEffect(() => {
     axios
       .get(`${ApiUrl}/recipes`)
       .then((response) => {
-        setRecipes(response.data.recipes);
+        let recipes = {};
+        for (const recipe of response.data.recipes) {
+          recipes[recipe._id] = recipe;
+        }
+        setRecipes(recipes);
         setError("");
       })
       .catch((error) => {
@@ -48,7 +77,7 @@ function Recipes() {
                   {error}
                 </Alert>
               )}
-              {recipes.map(function (recipe, idx) {
+              {Object.values(recipes).map(function (recipe, idx) {
                 return (
                   <>
                     <Card
@@ -60,13 +89,17 @@ function Recipes() {
                         {recipe.meal}
                       </Card.Header>
                       <Card.Body>
-                        <Card.Title>{recipe.name}</Card.Title>
+                        <Card.Title>
+                          <Link className="recipe-title" onClick={handleShow} data-id={recipe._id}>
+                            {recipe.name}
+                          </Link>
+                        </Card.Title>
                         <Card.Text>{recipe.ingredients}</Card.Text>
-                        
+                        <Card.Text>by <i>{recipe.user.fullname}</i></Card.Text>
                       </Card.Body>
                       <div>
-                          <StarRating />
-                        </div>
+                        <StarRating />
+                      </div>
                     </Card>
                   </>
                 );
@@ -74,6 +107,23 @@ function Recipes() {
             </Row>
           </Card.Body>
         </Row>
+
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>{name}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body className="display-linebreak">
+            <b>Meal:</b> {meal} <hr />
+            <b>Ingredient:</b> {ingredients} <hr />
+            <b>Instructions:</b> <br />
+            {instructions.replace("\n\n", "\n")}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </Container>
     </div>
   );

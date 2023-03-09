@@ -5,7 +5,11 @@ const recipeSchema = new Schema({
   meal: { type: String },
   ingredients: { type: String },
   instructions: { type: String },
-  user_id: { type: String },
+  // user_id: { type: String },
+  user:{
+    type: Schema.ObjectId,
+    ref: 'user'
+}
 });
 
 module.exports = model("recipe", recipeSchema);
