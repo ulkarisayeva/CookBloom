@@ -185,7 +185,6 @@ app.delete("/recipe/:recipeID", auth, async (req, res) => {
 
 // List saved recipe endpoint
 app.get("/saved-recipes", auth, async (req, res) => {
-  console.log(req.user.user_id);
   Recipe.find({user: ObjectId(req.user.user_id)}, function (err, recipes) {
     if (err) {
       res.status(404).json({
