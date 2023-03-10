@@ -57,6 +57,7 @@ function MakeMeal() {
   const handleMakemeal = (e) => {
     e.preventDefault();
     setLoading(true);
+    setInstructions("");
     axios
       .post(
         `${ApiUrl}/generate-recipe`,
