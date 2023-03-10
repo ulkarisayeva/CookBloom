@@ -5,6 +5,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
 
+const ObjectId = require('mongodb').ObjectID;
+
 const User = require("./model/user");
 const Recipe = require("./model/recipe");
 const auth = require("./middleware/auth");
@@ -183,7 +185,8 @@ app.delete("/recipe/:recipeID", auth, async (req, res) => {
 
 // List saved recipe endpoint
 app.get("/saved-recipes", auth, async (req, res) => {
-  Recipe.find({user_id: { $eq: req.user.user_id }}, function (err, recipes) {
+  console.log(req.user.user_id);
+  Recipe.find({user: ObjectId(req.user.user_id)}, function (err, recipes) {
     if (err) {
       res.status(404).json({
         success: "false",
